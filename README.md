@@ -1,8 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# M3U8 Player
+
+A minimalist web-based M3U8/HLS stream player built with Next.js and Video.js.
+
+## Features
+
+- Enter M3U8 URLs and play HLS streams directly in your browser
+- Automatic playlist management that stores your viewing history
+- Responsive design that works on both desktop and mobile devices
+- Video playback using the robust Video.js library
+- Dark mode support for comfortable viewing in low-light environments
+- Playlist persistence using browser localStorage
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +31,43 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter an M3U8 URL in the input field and click "Play"
+2. The video will start playing below the input field
+3. The video is automatically added to your playlist on the right side
+4. Click on any video in your playlist to play it again
+5. Remove videos from your playlist by clicking the "X" button
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js 15](https://nextjs.org/) - React framework for production
+- [Video.js](https://videojs.com/) - HTML5 video player with HLS support
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
+- [LocalStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) - For playlist persistence
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Building for Production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+# or
+yarn build
+# or
+pnpm build
+```
 
-## Deploy on Vercel
+Then, you can deploy the `out` directory to any static hosting service.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](./LICENSE)
+
+## Acknowledgments
+
+- [Video.js](https://videojs.com/) for providing a robust video player
+- [Next.js](https://nextjs.org/) for the React framework
