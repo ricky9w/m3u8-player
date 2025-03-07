@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import UrlInput from '@/components/UrlInput';
 import Playlist from '@/components/Playlist';

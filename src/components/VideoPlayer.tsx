@@ -34,7 +34,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, onVideoEnd, className })
 
       // Add event listener for video end
       playerRef.current.on('ended', () => {
-        onVideoEnd && onVideoEnd();
+        if (onVideoEnd) {
+          onVideoEnd();
+        }
       });
     } else if (playerRef.current) {
       // Update the player source if it already exists
