@@ -1,0 +1,10 @@
+name = "m3u8-player"
+compatibility_date = "2025-02-04"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "out"
+
+[vars]
+NODE_VERSION = "22.14.0"
+
+[env.production.vars]
+NODE_VERSION = "22.14.0"
