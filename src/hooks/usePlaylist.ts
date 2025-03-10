@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { VideoItem, PlaylistState } from '@/types';
 
 const STORAGE_KEY = 'm3u8-player-playlist';
@@ -36,50 +36,53 @@ export const usePlaylist = () => {
   }, [state]);
 
   // Add a video to the playlist and set it as current
-  const addVideo = (url: string, title: string) => {
-    const existingVideo = state.videos.find(video => video.url === url);
-    
-    if (existingVideo) {
-      setState({
-        ...state,
-        currentVideoId: existingVideo.id
-      });
-      return;
-    }
-    
-    const newVideo: VideoItem = {
-      id: generateId(),
-      url,
-      title,
-      addedAt: Date.now()
-    };
-    
-    setState({
-      videos: [...state.videos, newVideo],
-      currentVideoId: newVideo.id
+  const addVideo = useCallback((url: string, title: string) => {
+    setState(prevState => {
+      const existingVideo = prevState.videos.find(video => video.url === url);
+      
+      if (existingVideo) {
+        return {
+          ...prevState,
+          currentVideoId: existingVideo.id
+        };
+      }
+      
+      const newVideo: VideoItem = {
+        id: generateId(),
+        url,
+        title,
+        addedAt: Date.now()
+      };
+      
+      return {
+        videos: [...prevState.videos, newVideo],
+        currentVideoId: newVideo.id
+      };
     });
-  };
+  }, []);
 
   // Play a specific video from the playlist
-  const playVideo = (video: VideoItem) => {
-    setState({
-      ...state,
+  const playVideo = useCallback((video: VideoItem) => {
+    setState(prevState => ({
+      ...prevState,
       currentVideoId: video.id
-    });
-  };
+    }));
+  }, []);
 
   // Delete a video from the playlist
-  const deleteVideo = (id: string) => {
-    const newVideos = state.videos.filter(video => video.id !== id);
-    const newCurrentId = state.currentVideoId === id
-      ? (newVideos.length > 0 ? newVideos[0].id : null)
-      : state.currentVideoId;
-    
-    setState({
-      videos: newVideos,
-      currentVideoId: newCurrentId
+  const deleteVideo = useCallback((id: string) => {
+    setState(prevState => {
+      const newVideos = prevState.videos.filter(video => video.id !== id);
+      const newCurrentId = prevState.currentVideoId === id
+        ? (newVideos.length > 0 ? newVideos[0].id : null)
+        : prevState.currentVideoId;
+      
+      return {
+        videos: newVideos,
+        currentVideoId: newCurrentId
+      };
     });
-  };
+  }, []);
 
   // Get the current video object
   const getCurrentVideo = (): VideoItem | undefined => {

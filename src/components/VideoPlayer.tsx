@@ -7,9 +7,15 @@ interface VideoPlayerProps {
   src: string;
   onVideoEnd?: () => void;
   className?: string;
+  autoPlay?: boolean;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, onVideoEnd, className }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
+  src, 
+  onVideoEnd, 
+  className,
+  autoPlay = false 
+}) => {
   const videoRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
 
@@ -22,7 +28,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, onVideoEnd, className })
       videoRef.current.appendChild(videoElement);
 
       playerRef.current = videojs(videoElement, {
-        autoplay: false,
+        autoplay: autoPlay,
         controls: true,
         responsive: true,
         fluid: true,
@@ -53,7 +59,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, onVideoEnd, className })
         playerRef.current = null;
       }
     };
-  }, [src, onVideoEnd]);
+  }, [src, onVideoEnd, autoPlay]);
 
   return (
     <div data-vjs-player className={className}>

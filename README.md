@@ -10,6 +10,7 @@ A minimalist web-based M3U8/HLS stream player built with Next.js and Video.js.
 - Video playback using the robust Video.js library
 - Dark mode support for comfortable viewing in low-light environments
 - Playlist persistence using browser localStorage
+- **Video sharing via URL parameters** - easily share videos with friends
 
 ## Getting Started
 
@@ -42,6 +43,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 3. The video is automatically added to your playlist on the right side
 4. Click on any video in your playlist to play it again
 5. Remove videos from your playlist by clicking the "X" button
+6. **Share videos** by clicking the "Share" button next to the video title, which copies a direct URL to your clipboard
+
+### URL Parameters
+
+You can directly access a video by adding URL parameters:
+
+- `?url=https://example.com/path/to/video.m3u8` - Required parameter with the M3U8 URL
+- `?title=My%20Video%20Title` - Optional parameter to set a custom title
+
+Example:
+```
+https://your-domain.com/?url=https://example.com/video.m3u8&title=My%20Cool%20Video
+```
+
+When someone visits this URL, the video will automatically be added to their playlist and start playing.
 
 ## Technologies Used
 

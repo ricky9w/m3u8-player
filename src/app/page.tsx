@@ -1,8 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import UrlInput from '@/components/UrlInput';
 import Playlist from '@/components/Playlist';
+import ShareButton from '@/components/ShareButton';
 import usePlaylist from '@/hooks/usePlaylist';
 
 // Dynamically import VideoPlayer to avoid SSR issues with Video.js
@@ -16,6 +19,9 @@ const VideoPlayer = dynamic(() => import('@/components/VideoPlayer'), {
 });
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const [autoPlayFromUrl, setAutoPlayFromUrl] = useState(false);
+  
   const { 
     videos, 
     currentVideoId, 
@@ -24,6 +30,18 @@ export default function Home() {
     playVideo, 
     deleteVideo 
   } = usePlaylist();
+
+  // 处理URL参数中的视频链接
+  useEffect(() => {
+    const urlParam = searchParams.get('url');
+    const titleParam = searchParams.get('title') || '来自链接分享的视频';
+    
+    if (urlParam && urlParam.trim().endsWith('.m3u8')) {
+      // 在组件挂载后检查URL是否包含视频链接，如果有则添加并播放
+      addVideo(urlParam.trim(), titleParam);
+      setAutoPlayFromUrl(true);
+    }
+  }, [searchParams, addVideo]);
 
   const handleVideoSubmit = (url: string, title: string) => {
     addVideo(url, title);
@@ -48,12 +66,16 @@ export default function Home() {
             
             {currentVideo ? (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                <h2 className="text-lg font-semibold mb-2">{currentVideo.title}</h2>
+                <div className="flex justify-between items-start mb-2">
+                  <h2 className="text-lg font-semibold">{currentVideo.title}</h2>
+                  <ShareButton video={currentVideo} />
+                </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 break-all">{currentVideo.url}</p>
                 <div className="aspect-video">
                   <VideoPlayer 
-                    src={currentVideo.url} 
+                    src={currentVideo.url}
                     className="w-full h-full"
+                    autoPlay={autoPlayFromUrl}
                   />
                 </div>
               </div>
