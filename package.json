@@ -19,6 +19,12 @@
     "min-document": ">=2.19.1",
     "js-yaml": ">=4.1.1"
   },
+  "pnpm": {
+    "overrides": {
+      "min-document": ">=2.19.1",
+      "js-yaml": ">=4.1.1"
+    }
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
