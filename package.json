@@ -17,12 +17,14 @@
   },
   "overrides": {
     "min-document": ">=2.19.1",
-    "js-yaml": ">=4.1.1"
+    "js-yaml": ">=4.1.1",
+    "minimatch": ">=9.0.7 <10"
   },
   "pnpm": {
     "overrides": {
       "min-document": ">=2.19.1",
-      "js-yaml": ">=4.1.1"
+      "js-yaml": ">=4.1.1",
+      "minimatch": ">=9.0.7 <10"
     }
   },
   "devDependencies": {
