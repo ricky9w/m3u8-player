@@ -1,89 +1,71 @@
 # M3U8 Player
 
-A minimalist web-based M3U8/HLS stream player built with Next.js and Video.js.
+A minimalist web-based M3U8/HLS stream player built with SvelteKit and Video.js, deployed on Cloudflare Workers.
 
 ## Features
 
 - Enter M3U8 URLs and play HLS streams directly in your browser
-- Automatic playlist management that stores your viewing history
-- Responsive design that works on both desktop and mobile devices
-- Video playback using the robust Video.js library
-- Dark mode support for comfortable viewing in low-light environments
-- Playlist persistence using browser localStorage
-- **Video sharing via URL parameters** - easily share videos with friends
+- Automatic playlist management with browser-`localStorage` persistence
+- Responsive design — desktop and mobile
+- Robust HLS playback via [Video.js](https://videojs.com/)
+- Dark mode that follows the OS `prefers-color-scheme` setting
+- **Share via URL parameters** — copy a deep link to any video in your playlist
 
-## Getting Started
+## Tech stack
 
-First, install the dependencies:
+- [SvelteKit](https://svelte.dev/docs/kit) (Svelte 5, runes mode)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [shadcn-svelte](https://www.shadcn-svelte.com/) components
+- [Bun](https://bun.com/) as runtime + package manager
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) deployment via [`@sveltejs/adapter-cloudflare`](https://svelte.dev/docs/kit/adapter-cloudflare)
+- [Vitest](https://vitest.dev/) for unit + component tests
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-```
-
-Then, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:5173>.
 
-## Usage
+## Scripts
 
-1. Enter an M3U8 URL in the input field and click "Play"
-2. The video will start playing below the input field
-3. The video is automatically added to your playlist on the right side
-4. Click on any video in your playlist to play it again
-5. Remove videos from your playlist by clicking the "X" button
-6. **Share videos** by clicking the "Share" button next to the video title, which copies a direct URL to your clipboard
+| Script            | What it does                                                    |
+| ----------------- | --------------------------------------------------------------- |
+| `bun run dev`     | Start the Vite dev server                                       |
+| `bun run check`   | `wrangler types --check` + `svelte-check`                       |
+| `bun run lint`    | Prettier + ESLint                                               |
+| `bun run format`  | Auto-fix Prettier                                               |
+| `bun run test`    | Vitest (client jsdom + server node projects)                    |
+| `bun run build`   | Produce the Cloudflare Worker build at `.svelte-kit/cloudflare` |
+| `bun run preview` | Run the built Worker locally via Wrangler                       |
+| `bun run gen`     | Regenerate `worker-configuration.d.ts` from `wrangler.jsonc`    |
 
-### URL Parameters
+## URL parameters
 
-You can directly access a video by adding URL parameters:
+You can deep-link a video by adding query parameters:
 
-- `?url=https://example.com/path/to/video.m3u8` - Required parameter with the M3U8 URL
-- `?title=My%20Video%20Title` - Optional parameter to set a custom title
+- `?url=https://example.com/path/to/video.m3u8` — the HLS URL (required)
+- `?title=Custom%20title` — optional human-readable title
 
-Example:
 ```
 https://your-domain.com/?url=https://example.com/video.m3u8&title=My%20Cool%20Video
 ```
 
-When someone visits this URL, the video will automatically be added to their playlist and start playing.
+When someone opens that link, the video is added to their playlist and starts playing automatically.
 
-## Technologies Used
+## Deploying to Cloudflare Workers
 
-- [Next.js 15](https://nextjs.org/) - React framework for production
-- [Video.js](https://videojs.com/) - HTML5 video player with HLS support
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
-- [LocalStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) - For playlist persistence
-
-## Building for Production
+The app is fully prerendered (`export const prerender = true` + `ssr = false`), so the Worker just serves the static assets in `.svelte-kit/cloudflare` through the `ASSETS` binding.
 
 ```bash
-npm run build
-# or
-yarn build
-# or
-pnpm build
+bun run build
+bunx wrangler deploy
 ```
 
-Then, you can deploy the `out` directory to any static hosting service.
+`wrangler.jsonc` already wires up the entry script, the `ASSETS` binding, and `observability.enabled`.
 
 ## License
 
 [MIT](./LICENSE)
-
-## Acknowledgments
-
-- [Video.js](https://videojs.com/) for providing a robust video player
-- [Next.js](https://nextjs.org/) for the React framework
